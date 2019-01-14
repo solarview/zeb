@@ -1,8 +1,21 @@
-﻿'건물 관련
+﻿'기상 자료 관련
+Public Enum zOrientationType
+    수평면 = 0
+    북 = 1
+    북동 = 2
+    동 = 3
+    남동 = 4
+    남 = 5
+    남서 = 6
+    서 = 7
+    북서 = 8
+End Enum
+
+'건물 관련
 Public Enum zBuildingType
-    주거단독
-    주거다세대
-    비주거
+    주거단독 = 0
+    주거다세대 = 1
+    비주거 = 2
 End Enum
 
 Public Enum zSoilType
@@ -11,7 +24,7 @@ Public Enum zSoilType
     바위
 End Enum
 
-Public Enum zCityIndex
+Public Enum zLocationIndex
     서울운영규정 = 0
     강릉
     강화

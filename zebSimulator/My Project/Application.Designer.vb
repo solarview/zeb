@@ -32,7 +32,7 @@ Namespace My
         
         <Global.System.Diagnostics.DebuggerStepThroughAttribute()>  _
         Protected Overrides Sub OnCreateMainForm()
-            Me.MainForm = Global.ZEB.Simulator.MainForm
+            Me.MainForm = Global.ZEB.Simulator.ExcelTester
         End Sub
     End Class
 End Namespace

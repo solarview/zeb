@@ -1,7 +1,7 @@
 ﻿Imports ZEB.Core
 Imports Microsoft.Office.Interop
 
-Public Class MainForm
+Public Class ExcelTester
     Dim objApp As Excel.Application
     Dim objBook As Excel._Workbook
 

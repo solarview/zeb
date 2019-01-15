@@ -75,6 +75,9 @@
     End Sub
 End Class
 
+
+
+
 ''' <summary>
 ''' 존의 집합체를 나타내는 클래스
 ''' </summary>
@@ -89,6 +92,7 @@ Public Class Zones
         _zones = New Generic.Dictionary(Of String, Zone)
     End Sub
 #End Region
+
     ''' <summary>
     ''' 모든 존의 순바닥면적을 합산하여 반환한다.
     ''' </summary>
@@ -96,7 +100,7 @@ Public Class Zones
     Public Function A_NF() As Double
         Dim sum As Double = 0
         For Each ttt As KeyValuePair(Of String, Zone) In _zones
-            sum += ttt.Value.A_NF
+            sum += ttt.Value.A_NF 'sum = sum + ttt.Value.A_NF
         Next
         Return sum
     End Function
@@ -109,6 +113,8 @@ Public Class Zones
     Public Sub AddZone(newZoneName As String, NewZone As Zone)
         _zones.Add(newZoneName, NewZone)
     End Sub
+
+
 
     Public Sub Import(FileName As String)
 

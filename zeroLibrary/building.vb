@@ -35,7 +35,7 @@ Public Class BuildingInfo
     Private _SurfaceArea As Double
     '외부체적
     Private _V_e As Double
-    Private _SurfaceAreaToVolumeRatio As Double
+    'Private _SurfaceAreaToVolumeRatio As Double
     '기하학적 특성값
     '길이
     Private _L_char As Double
@@ -97,7 +97,17 @@ Public Class BuildingInfo
     End Property
 
     Public Property SiolType As zSoilType
-
+        Get
+            Return _SoilType
+        End Get
+        Set(value As zSoilType)
+            _SoilType = value
+        End Set
+    End Property
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <returns></returns>
     Public Property Name As String
         Get
             Return _Name
@@ -106,38 +116,114 @@ Public Class BuildingInfo
             _Name = value
         End Set
     End Property
-
+    '<교수님>
     Public Property Altitude As Double
+        Get
+            Return _Altitude
+        End Get
+        Set(value As Double)
+            _Altitude = value
+        End Set
+    End Property
 
     '건물 주소
     Public Property Address As String
+        Get
+            Return _Address
+        End Get
+        Set(value As String)
+            _Address = value
+        End Set
+    End Property
     '층수
     Public Property n_G As Integer
+        Get
+            Return _n_G
+        End Get
+        Set(value As Integer)
+            _n_G = value
+        End Set
+    End Property
     '연면적
     Public Property TotalFloorArea As Double
-    '순바닥면적 net floor area = 모든 존의 바닥면적의 합
-
+        Get
+            Return _TotalFloorArea
+        End Get
+        Set(value As Double)
+            _TotalFloorArea = value
+        End Set
+    End Property
+    '</교수님>
+    '
+    '  
     ''' <summary>
     ''' 건물에 등록된 모든 존들의 순바닥면적을 반환한다.
+    ''' 순바닥면적 net floor area = 모든 존의 바닥면적의 합
+    ''' 
     ''' </summary>
-    ''' <returns>순바닥면적[double]</returns>
+    ''' <returns>순바닥면적[m^2]</returns>
     Public ReadOnly Property A_NF As Double
         Get
             Return _zones.A_NF()
         End Get
     End Property
 
-    '외피면적
+    '
+    ''' <summary>
+    ''' 외피면적을 입력하거나 출력하는 속성
+    ''' </summary>
+    ''' <returns>외피면적</returns>
     Public Property SurfaceArea As Double
+        Get
+            Return _SurfaceArea
+        End Get
+        Set(value As Double)
+            _SurfaceArea = value
+        End Set
+    End Property
+
+    '<최문정>
     '외부체적
     Public Property V_e As Double
+        Get
+            Return _V_e
+        End Get
+        Set(value As Double)
+            _V_e = value
+        End Set
+    End Property
     '외피면적체적비
-    Public Property SurfaceAreaToVolumeRatio As Double
+    Public ReadOnly Property SurfaceAreaToVolumeRatio As Double
+        Get
+            Dim _SurfaceAreaToVolumeRatio As Double
+            If _V_e <> 0 Then
+                _SurfaceAreaToVolumeRatio = _SurfaceArea / _V_e
+            Else
+                _SurfaceAreaToVolumeRatio = 0
+            End If
+            Return _SurfaceAreaToVolumeRatio
+        End Get
+    End Property
     '기하학적 특성값
     '길이
     Public Property L_char As Double
+        Get
+            Return _L_char
+        End Get
+        Set(value As Double)
+            _L_char = value
+        End Set
+    End Property
     '너비
     Public Property B_char As Double
+        Get
+            Return _B_char
+        End Get
+        Set(value As Double)
+            _B_char = value
+        End Set
+    End Property
+    '</최문정>
 #End Region
 
 #Region "Methods"
@@ -161,7 +247,7 @@ Public Class BuildingInfo
         _SurfaceArea = 0.0
         '외부체적
         _V_e = 0.0
-        _SurfaceAreaToVolumeRatio = 0.0
+        '_SurfaceAreaToVolumeRatio = 0.0
         '기하학적 특성값
         '길이
         _L_char = 0.0
@@ -169,7 +255,9 @@ Public Class BuildingInfo
         _B_char = 0.0
     End Sub
     Public Sub Import(FileName As String)
-
+        Me.SurfaceArea = 100
+        Dim ttt As Double = Me.SurfaceArea
+        ttt = Me.SurfaceAreaToVolumeRatio
     End Sub
     Public Sub Export(filename As String)
 

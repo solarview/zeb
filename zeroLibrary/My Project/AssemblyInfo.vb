@@ -8,10 +8,10 @@ Imports System.Runtime.InteropServices
 
 ' 어셈블리 특성 값을 검토합니다.
 
-<Assembly: AssemblyTitle("zeroLibrary")>
+<Assembly: AssemblyTitle("ZEB.Core")>
 <Assembly: AssemblyDescription("")>
 <Assembly: AssemblyCompany("")>
-<Assembly: AssemblyProduct("zeroLibrary")>
+<Assembly: AssemblyProduct("ZEB.Core")>
 <Assembly: AssemblyCopyright("Copyright ©  2019")>
 <Assembly: AssemblyTrademark("")>
 

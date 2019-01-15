@@ -24,19 +24,6 @@ Public Class ClimateData
 
     Private _Test As Double
 
-    Public Property Test As Double
-        Get
-            Return _Test
-        End Get
-        Set(value As Double)
-            If value < 0 Or value > 11 Then
-                value = 0
-            End If
-            _Test = value
-        End Set
-    End Property
-
-
 
 #End Region
 

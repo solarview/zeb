@@ -65,7 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="building.vb" />
-    <Compile Include="campus.vb" />
+    <Compile Include="site.vb" />
     <Compile Include="climate.vb" />
     <Compile Include="energyneedforusage.vb" />
     <Compile Include="envelope.vb" />
@@ -91,7 +91,7 @@
     <Compile Include="UsageProfile.vb" />
     <Compile Include="util.vb" />
     <Compile Include="ventilation.vb" />
-    <Compile Include="zoneinfo.vb" />
+    <Compile Include="zone.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

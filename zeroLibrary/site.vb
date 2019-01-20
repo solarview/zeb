@@ -1,4 +1,4 @@
-﻿Public Class Campus
+﻿Public Class Site
 #Region “Instance Variables”
 #End Region
 #Region “Constructors”

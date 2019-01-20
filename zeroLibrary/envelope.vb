@@ -1,7 +1,10 @@
 ﻿Public Class Envelope
 
-    '외피 유형
-    '인접면 설정
+    '이름
+    '외피 유형 => 일반 벽이든 창이 되게 한다. (상속으로 처리)
+    '인접면 설정 => 외기든 다른 존이든 설정하게 한다.
+    Private _InsideZone As Zone
+
     '방위
     '기울기
     '면적
@@ -9,8 +12,22 @@
     '열관류율
     '흡수율
     '인접 존 선택
+    Private _OutsideZone As Zone
 
 
+
+End Class
+
+
+
+Public Class Wall
+    Inherits Envelope
+
+
+End Class
+
+Public Class Window
+    Inherits Envelope
     '창호 길이
     '창호 높이
     '하인방 높이

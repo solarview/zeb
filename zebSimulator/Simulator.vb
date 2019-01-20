@@ -26,17 +26,24 @@ Public Class Simulator
     Sub Test()
         'Dim theBuilding As building
     End Sub
+
+    Sub Read(FileName As String)
+
+    End Sub
 #End Region
 #Region “Shared Functions”
 #End Region
 #Region "Main Application Runs."
     Public Shared Sub Main()
         '---- 분석을 위한 개체 생성
-        Dim theView As ExcelTester = New ExcelTester()
-        Dim theSimulator As Simulator = New Simulator(theView) '[create the Controller]
-        '
-        '---- 프로그램을 실행 -> 폼이 닫히면 프로그램은 종료된다.
-        Application.Run(theSimulator.View)
+        'Dim theView As ExcelTester = New ExcelTester()
+        'Dim theSimulator As Simulator = New Simulator(theView) '[create the Controller]
+        ''
+        ''---- 프로그램을 실행 -> 폼이 닫히면 프로그램은 종료된다.
+        'Application.Run(theSimulator.View)
+        '<Test>
+        MessageBox.Show("Sub Main Begins", "It works.")
+        '</Test>
         ''
     End Sub
 #End Region

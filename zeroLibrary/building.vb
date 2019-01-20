@@ -7,7 +7,7 @@
 ''' <summary>
 ''' 건물을 정보를 갖는 클래스
 ''' </summary>
-Public Class BuildingInfo
+Public Class Building
 #Region "Instance Variables"
     '1.건물 정보 입력
     '건물 유형
@@ -62,13 +62,16 @@ Public Class BuildingInfo
 #End Region
 
 #Region "Constructors"
+    ''' <summary>
+    ''' Default constructor
+    ''' </summary>
     Sub New()
         _zones = New Zones()
         SetDefaultValues()
     End Sub
 
     'copy constructor
-    Sub New(otherBuilding As BuildingInfo)
+    Sub New(otherBuilding As Building)
         Me.New()
         '
         '<복제 과정>
@@ -117,43 +120,64 @@ Public Class BuildingInfo
         End Set
     End Property
     '<교수님>
+    ' 고도 차이
+    ''' <summary>
+    ''' 건물과 기상청의 고도 차이를 입력하거나 출력하는 속성.
+    ''' 고도차이 = 건물의 고도 - 기상청의 고도
+    ''' </summary>
+    ''' <returns>고도 차이[m]</returns>
     Public Property Altitude As Double
         Get
             Return _Altitude
         End Get
-        Set(value As Double)
-            _Altitude = value
+        Set(Value As Double)
+            _Altitude = Value
         End Set
     End Property
 
     '건물 주소
+    ''' <summary>
+    ''' 건물 주소를 입력하거나 출력하는 속성.
+    ''' </summary>
+    ''' <returns>건물 주소</returns>
     Public Property Address As String
         Get
             Return _Address
         End Get
-        Set(value As String)
-            _Address = value
+        Set(sValue As String)
+            _Address = sValue
         End Set
     End Property
+
     '층수
+    ''' <summary>
+    ''' 층수를 입력하거나 출력하는 속성.
+    ''' </summary>
+    ''' <returns>층수</returns>
     Public Property n_G As Integer
         Get
             Return _n_G
         End Get
-        Set(value As Integer)
-            _n_G = value
+        Set(iValue As Integer)
+            _n_G = iValue
         End Set
     End Property
+
     '연면적
+    ''' <summary>
+    ''' 건물의 연면적을 입력하거나 출력하는 속성.
+    ''' </summary>
+    ''' <returns>연면적[m^2]</returns>
     Public Property TotalFloorArea As Double
         Get
             Return _TotalFloorArea
         End Get
-        Set(value As Double)
-            _TotalFloorArea = value
+        Set(Value As Double)
+            _TotalFloorArea = Value
         End Set
     End Property
     '</교수님>
+
     '
     '  
     ''' <summary>
@@ -164,6 +188,8 @@ Public Class BuildingInfo
     ''' <returns>순바닥면적[m^2]</returns>
     Public ReadOnly Property A_NF As Double
         Get
+            _zones.Item("존 01").A_NF = 1
+            _zones("존 01").A_NF = 1
             Return _zones.A_NF()
         End Get
     End Property
@@ -234,7 +260,7 @@ Public Class BuildingInfo
         '
         _Name = "New Building"
         '고도차이
-        _Altitude = 0.0
+        _Altitude = 0.0 ' 서울고도 - 서울기상청고도
         '건물 주소
         _Address = "서울시"
         '층수

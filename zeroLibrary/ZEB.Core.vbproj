@@ -69,6 +69,7 @@
     <Compile Include="climate.vb" />
     <Compile Include="energyneedforusage.vb" />
     <Compile Include="envelope.vb" />
+    <Compile Include="Ienergybalance.vb" />
     <Compile Include="index.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -86,6 +87,9 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="solar.vb" />
+    <Compile Include="table.vb" />
+    <Compile Include="UsageProfile.vb" />
+    <Compile Include="util.vb" />
     <Compile Include="ventilation.vb" />
     <Compile Include="zoneinfo.vb" />
   </ItemGroup>

@@ -1,6 +1,9 @@
 ﻿Public Class Zone
 #Region "존정보입력"
+
     '1.존정보입력
+    '존 이름 = 유일무이한 이름이어야 한다.
+    Private _Name As String
     '용도 프로필
     Private _UsageType As zUsageType = zUsageType.대규모사무실사용자입력
     '냉난방여부
@@ -52,6 +55,14 @@
     '지하수유속
 #End Region
 #Region "Properties"
+    Public Property Name As String
+        Get
+            Return _Name
+        End Get
+        Set(value As String)
+            _Name = value
+        End Set
+    End Property
     Public Property A_NF As Double
         Get
             Return _A_NF
@@ -62,10 +73,10 @@
     End Property
 #End Region
     Sub test()
-        Dim Abuilding As BuildingInfo
-        Dim Bbuilding As BuildingInfo
-        Abuilding = New BuildingInfo()
-        Bbuilding = New BuildingInfo(Abuilding)
+        Dim Abuilding As Building
+        Dim Bbuilding As Building
+        Abuilding = New Building()
+        Bbuilding = New Building(Abuilding)
     End Sub
     Public Sub Import(FileName As String)
 
@@ -84,7 +95,7 @@ End Class
 Public Class Zones
 
 #Region "Instance Variables"
-    Private _zones As Generic.Dictionary(Of String, Zone)
+    Private _zones As Generic.Dictionary(Of String, Zone) ' key 의 형식이 문자열, value의 형식이 Zone
 #End Region
 
 #Region "Constructors"
@@ -93,6 +104,22 @@ Public Class Zones
     End Sub
 #End Region
 
+#Region "Properties"
+    ''' <summary>
+    ''' 등록된 존을 반환한다.
+    ''' Default Property로 선언해서 Zones.Item("존의 이름")과 동일하게 
+    ''' Zones("존의 이름")과 같이 사용할 수 있음
+    ''' </summary>
+    ''' <param name="ZoneName">등록된 존의 이름[string]</param>
+    ''' <returns>등록된 존[zone]</returns>
+    Default Public ReadOnly Property Item(ZoneName As String) As Zone
+        Get
+            Return _zones.Item(ZoneName)
+        End Get
+    End Property
+#End Region
+
+#Region "Methods"
     ''' <summary>
     ''' 모든 존의 순바닥면적을 합산하여 반환한다.
     ''' </summary>
@@ -111,10 +138,13 @@ Public Class Zones
     ''' <param name="newZoneName">새 존의 이름. 유일무이한 이름이어야 한다.</param>
     ''' <param name="NewZone">새 존의 객체</param>
     Public Sub AddZone(newZoneName As String, NewZone As Zone)
+        '기존에 등록된 존의 이름과 중복이 되는지를 검토해야함.
         _zones.Add(newZoneName, NewZone)
     End Sub
 
-
+    Function CheckName() As Boolean
+        Return True
+    End Function
 
     Public Sub Import(FileName As String)
 
@@ -125,4 +155,5 @@ Public Class Zones
     Public Sub Export(filename As String)
 
     End Sub
+#End Region
 End Class

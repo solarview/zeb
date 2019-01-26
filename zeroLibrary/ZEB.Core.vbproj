@@ -92,6 +92,7 @@
     <Compile Include="util.vb" />
     <Compile Include="ventilation.vb" />
     <Compile Include="zone.vb" />
+    <Compile Include="zoneedit.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

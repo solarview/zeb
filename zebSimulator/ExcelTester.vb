@@ -7,97 +7,27 @@ Imports System.Xml.Schema '유효성 검증용
 Imports System.Text '//Encoding.GetEncoding()함수용
 
 Public Class ExcelTester
+#Region "Instance variables"
+    '
+    'Excel이용을 위한 변수 선언
     Dim objApp As Excel.Application
     Dim oldBook As Excel._Workbook
+    '
+    'ZEB.Core이용을 위한 변수 선언
+    ReadOnly theUsageProfiles As UsageProfiles = New UsageProfiles()
+    ReadOnly theWeatherStations As WeatherStations = New WeatherStations()
+#End Region
 
+#Region "Event Handlers"
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'txtDisplay.Text = "Hello, World!"
 
-        Call Simulator.Main()
+        'Call Simulator.Main()
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        txtDisplay.Text = theWeatherStations(0).ExportCSV
 
-        Dim objBooks As Excel.Workbooks
-        Dim objSheets As Excel.Sheets
-        Dim objSheet As Excel._Worksheet
-        Dim range As Excel.Range
-        '
-
-        '
-        'Dim InputFileName As String = "c:\Test.XLS"
-        ''<파일존재여부>
-        'Dim CheckFile As New FileInfo(InputFileName) '파일 존재 여부를 검토하는 객체
-        'If Not CheckFile.Exists Then '-- 파일의 존재 여부 검토
-        '    Exit Sub
-        'End If
-        ''</파일존재여부>
-
-        ' Create a new instance of Excel and start a new workbook.
-        objApp = New Excel.Application()
-        '<이전방법>
-        objBooks = objApp.Workbooks
-        '</이전방법>
-        '<새방법>
-        'objBooks = objApp.Workbooks.Open(My.Settings.BuildingDataFile)
-        '</새방법>
-        '
-        '
-        oldBook = objBooks.Add
-        objSheets = oldBook.Worksheets
-        objSheet = objSheets(1)
-
-        'Get the range where the starting cell has the address
-        'm_sStartingCell and its dimensions are m_iNumRows x m_iNumCols.
-        range = objSheet.Range("A1", Reflection.Missing.Value)
-        range = range.Resize(5, 5)
-
-        If (Me.FillWithStrings.Checked = False) Then
-            'Create an array.
-            Dim saRet(5, 5) As Double
-
-            'Fill the array.
-            Dim iRow As Long
-            Dim iCol As Long
-            For iRow = 0 To 5
-                For iCol = 0 To 5
-
-                    'Put a counter in the cell.
-                    saRet(iRow, iCol) = iRow * iCol
-                Next iCol
-            Next iRow
-
-            'Set the range value to the array.
-            range.Value = saRet
-
-        Else
-            'Create an array.
-            Dim saRet(5, 5) As String
-
-            'Fill the array.
-            Dim iRow As Long
-            Dim iCol As Long
-            For iRow = 0 To 5
-                For iCol = 0 To 5
-
-                    'Put the row and column address in the cell.
-                    saRet(iRow, iCol) = iRow.ToString() + "|" + iCol.ToString()
-                Next iCol
-            Next iRow
-
-            'Set the range value to the array.
-            range.Value = saRet
-        End If
-
-        'Return control of Excel to the user.
-        objApp.Visible = True
-        objApp.UserControl = True
-
-        'Clean up a little.
-        range = Nothing
-        objSheet = Nothing
-        objSheets = Nothing
-        objBooks = Nothing
     End Sub
 
     Private Sub CmdImportExcel_Click(sender As Object, e As EventArgs) Handles cmdImportExcel.Click
@@ -179,14 +109,9 @@ ExcelNotRunning:
         newSheet = Nothing
         newSheets = Nothing
     End Sub
-    Sub test()
-        Dim theZone As Building
-        Dim otherZone As Building
-        '
-        theZone = New Building()
-        otherZone = New Building(theZone)
-    End Sub
+#End Region
 
+#Region "Methods"
     Function GetFileName() As String
         Dim filename As String = ""
         '0) 파일 열기를 위한 다이얼로그박스
@@ -223,4 +148,5 @@ ExcelNotRunning:
         '
         Return filename
     End Function
+#End Region
 End Class

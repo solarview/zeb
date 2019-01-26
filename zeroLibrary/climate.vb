@@ -1,36 +1,46 @@
 ﻿''' <summary>
-''' 기상 자료를 
+''' 기상 자료를 가지고 있는 기상대 클래스
 ''' </summary>
-Public Class ClimateData
+Public Class WeatherStation
 #Region "Instance Variables"
+    '
+    Private _Number As Integer
+    Private _Name As String
+    '
     '외기온도
     Private _Temperature(11) As Double
     Private _Irradiance(8, 11) As Double '(방위, 월)
-    Private _ClimateString As String
-    '
-    Private _ClimateStrings As Generic.List(Of String)
 
 #End Region
+
 #Region "Constructors"
-    Public Sub New()
-        _ClimateStrings = New Generic.List(Of String)
+    'Sub New()
+    '    '
+    'End Sub
+    '문자열로 기상대 생성
+    Public Sub New(txt)
+        InternalParse(txt)
     End Sub
 #End Region
 
 #Region "Properties"
     Public ReadOnly Property Temperature(ByVal Month As Integer) As Double
         Get
-            Return _Temperature(Month)
+            Return _Temperature(Month - 1)
         End Get
     End Property
-    Public ReadOnly Property Irradiance(ByVal Orientation As Integer, ByVal Month As Integer) As Double
+
+    ''' <summary>
+    ''' 입력한 방위와 월에 따라 일사량을 반환한다.
+    ''' </summary>
+    ''' <param name="Orientation">방위[0~8] [zOrientationType]</param>
+    ''' <param name="Month">월[1~12]</param>
+    ''' <returns>일사량</returns>
+    Public ReadOnly Property Irradiance(ByVal Orientation As zOrientationType, ByVal Month As Integer) As Double
         Get
-            Return _Irradiance(Orientation, Month)
+            Return _Irradiance(Orientation, Month - 1)
         End Get
     End Property
-
-    Private _Test As Double
-
 
 #End Region
 
@@ -38,9 +48,88 @@ Public Class ClimateData
     Public Sub Import(ByVal WeatherFile As String)
 
     End Sub
-    Public Sub Export(ByVal WeatherFile As String)
+    '
+    Public Function ExportCSV() As String
+        Dim builder As New System.Text.StringBuilder
 
+        For i As Integer = 0 To 11
+            builder.Append(_Temperature(i))
+            For j As Integer = 0 To 8
+                builder.Append("," & _Irradiance(j, i))
+            Next
+            builder.Append(vbCrLf)
+        Next
+
+        Return builder.ToString
+    End Function
+
+    ''' <summary>
+    ''' 문자열로 된 기상자료를 분석하여 내부 변수에 할당한다.
+    ''' </summary>
+    ''' <param name="txt">기상자료[문자열]</param>
+    Protected Overridable Sub InternalParse(ByVal txt As String)
+        '
+        '문자열을 쉼표로 구분하여 단어별로 배열을 만든다.
+        Dim words As String() = txt.Split(New Char() {","c})
+        '
+        '기상자료 번호
+        _Number = Integer.Parse(words(0)) '= cInt("12")
+        '지역 이름
+        _Name = words(1)
+        '
+        For i As Integer = 0 To 11 '월별
+            '
+            _Temperature(i) = Double.Parse(words(i * 10 + 2))
+            '
+            _Irradiance(0, i) = Double.Parse(words(i * 10 + 3))
+            _Irradiance(1, i) = Double.Parse(words(i * 10 + 4))
+            _Irradiance(2, i) = Double.Parse(words(i * 10 + 5))
+            _Irradiance(3, i) = Double.Parse(words(i * 10 + 6))
+            _Irradiance(4, i) = Double.Parse(words(i * 10 + 7))
+            _Irradiance(5, i) = Double.Parse(words(i * 10 + 8))
+            _Irradiance(6, i) = Double.Parse(words(i * 10 + 9))
+            _Irradiance(7, i) = Double.Parse(words(i * 10 + 10))
+            _Irradiance(8, i) = Double.Parse(words(i * 10 + 11))
+        Next
+        '
     End Sub
+#End Region
+
+#Region "Shared Methods"
+    Public Overloads Shared Function Parse(ByVal txt As String) As WeatherStation
+        Return New WeatherStation(txt)
+    End Function
+#End Region
+
+End Class
+
+
+
+
+
+Public Class WeatherStations
+#Region "Instance Variables"
+    Private _StationList As Generic.List(Of WeatherStation)
+    Private _ClimateStrings As Generic.List(Of String)
+#End Region
+#Region "Constructors"
+    Sub New()
+        _StationList = New Generic.List(Of WeatherStation)
+        _ClimateStrings = New Generic.List(Of String)
+    End Sub
+#End Region
+#Region "Properties"
+    Default Public Property Item(index As Integer) As WeatherStation
+        Get
+            Return _StationList(index)
+        End Get
+        Set(value As WeatherStation)
+            _StationList(index) = value
+        End Set
+    End Property
+#End Region
+
+#Region "Methods"
     Private Sub InitializeClimate()
         With _ClimateStrings
             .Add("0,서울(운영규정),-2.1,83,28.3,28.7,46.6,87.5,116,94.6,52,28.7,0.2,117.4,41,44.2,66.7,98.9,134.4,127.3,90.8,44.2,6.3,141.2,48.4,75,122.1,142,118.5,82.3,62.4,75,13,180.3,66.5,77.1,95.5,105.7,110.6,120.2,112.5,77.1,17.6,189.3,56.3,76.9,97,97.5,85.6,96.9,95.9,76.9,21.8,183.1,77.3,99.3,113,104.6,86,94.5,97.4,99.3,25.2,145.9,67,88.7,102,94.2,75.1,73.2,72,88.7,26.4,147.4,68.1,85,100.4,99.6,86.7,84.3,80.9,85,21.2,157.7,60.2,72.9,99.6,115.7,117.7,112.2,97.8,72.9,14.7,129.1,38.3,49.5,92.1,128.9,138.7,106.8,72.7,49.5,6.9,82.4,31.3,32.5,51.8,83.5,103.9,84.4,52.6,32.5,0.9,72.1,26.9,28.5,50.2,87.8,105.8,79.6,43.5,28.5")
@@ -111,9 +200,10 @@ Public Class ClimateData
             .Add("65,해남,1.1,96.4,30.6,32.8,62.8,106.2,130.2,100.2,58.5,32.7,2.2,130.6,37.5,44.4,79.7,118.9,145.1,122.4,82.5,44.8,7,190.8,49.6,68.9,113.3,143.5,153.8,137.2,105.7,64.4,12.3,216.5,58.5,84,118.9,130.9,122.8,128.7,117.9,84.7,16.1,207.1,62.5,89,110.8,105.8,86.8,103.3,106.6,85.7,21.6,212,67.4,88.3,104.3,97.1,78.9,100,109.4,92.6,23.4,150.4,55.2,65.2,75.3,73.1,64.7,79.1,85.5,73.5,25.2,189,60.2,83,104.5,103.9,92.4,107.3,106.6,82.6,21.6,191.9,52.2,70.6,108.3,131.5,134.9,125.6,103.3,69.4,16.2,150.9,41.3,55.8,98.3,136.1,154.4,130.2,90.4,50.5,9.5,106.4,32.5,35.8,66.9,109.9,136.9,110.2,67.7,36.7,4.1,87.3,28,29,52.1,95.6,123.9,98,53.9,29")
             .Add("66,홍천,-3.3,100.8,29.7,30.7,58.6,115.6,156.2,125.5,66.3,31.6,-1.6,119.6,34.8,39.6,69.7,113.4,147.7,129.3,83.6,43.4,4,152.2,46.6,54.6,82.4,109.1,126.2,114.8,87.9,56.7,10.4,200.5,55.4,71.1,100.8,119.2,122.4,122.6,106.5,75.9,17.4,226.2,64.7,89.2,115.3,115.7,100.6,122.8,126.9,98.5,21.2,222,71.5,89.6,107.1,102.1,87.6,115.3,127.3,104.9,24.1,156.3,51.7,58.5,68,69.4,67.8,85,89.4,73.2,24.2,202.7,59.5,80.6,107.7,115,106.7,120.3,116.8,88.1,18.5,139.4,42.4,48.3,69.2,90,106,102.3,81.9,54,11.4,145.4,41.2,52.9,85.5,124.1,153.3,139.9,96.5,52.6,5.1,85.4,28.2,30.4,50.6,85.3,118.9,108.7,70.8,35.5,-2.1,84.6,26.8,27.2,47.4,96.9,133.8,109.3,56.5,27.7")
         End With
-
+        '
+        For Each txt As String In _ClimateStrings
+            _StationList.Add(WeatherStation.Parse(txt))
+        Next
     End Sub
-
 #End Region
-
 End Class

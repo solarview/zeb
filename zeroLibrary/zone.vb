@@ -4,6 +4,7 @@
     '1.존정보입력
     '존 이름 = 유일무이한 이름이어야 한다.
     Private _Name As String
+    '
     '용도 프로필
     Private _UsageType As zUsageType = zUsageType.대규모사무실사용자입력
     '냉난방여부
@@ -54,6 +55,12 @@
     '지하수깊이
     '지하수유속
 #End Region
+    '
+    Private _zEnvelopes As Envelopes
+
+#Region "Constructors"
+
+#End Region
 #Region "Properties"
     Public Property Name As String
         Get
@@ -75,7 +82,10 @@
     Sub test()
         Dim Abuilding As Building
         Dim Bbuilding As Building
+        '
+        'default constructor 사용법
         Abuilding = New Building()
+        'copy constructor 사용법
         Bbuilding = New Building(Abuilding)
     End Sub
     Public Sub Import(FileName As String)
@@ -83,6 +93,9 @@
     End Sub
     Public Sub Export(filename As String)
 
+    End Sub
+    Sub AddEnvelope(newEnvelope As Envelope)
+        '_zEnvelopes.AddEnvelope()
     End Sub
 End Class
 
@@ -139,11 +152,16 @@ Public Class Zones
     ''' <param name="NewZone">새 존의 객체</param>
     Public Sub AddZone(newZoneName As String, NewZone As Zone)
         '기존에 등록된 존의 이름과 중복이 되는지를 검토해야함.
+        If _zones.ContainsKey(newZoneName) Then
+            MsgBox("다른 이름을 지어주십시오.", "중복된 이름")
+            Exit Sub
+        End If
+        '
         _zones.Add(newZoneName, NewZone)
     End Sub
 
-    Function CheckName() As Boolean
-        Return True
+    Function ContainsKey(key As String) As Boolean
+        Return _zones.ContainsKey(key)
     End Function
 
     Public Sub Import(FileName As String)

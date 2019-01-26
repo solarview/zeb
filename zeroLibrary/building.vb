@@ -67,6 +67,7 @@ Public Class Building
     ''' </summary>
     Sub New()
         _zones = New Zones()
+        '
         SetDefaultValues()
     End Sub
 
@@ -77,6 +78,9 @@ Public Class Building
         '<복제 과정>
         Me._SoilType = otherBuilding._SoilType
         '</복제 과정>
+    End Sub
+    Sub New(txt As String)
+        InternalParse(txt)
     End Sub
 #End Region
 
@@ -119,7 +123,7 @@ Public Class Building
             _Name = value
         End Set
     End Property
-    '<교수님>
+
     ' 고도 차이
     ''' <summary>
     ''' 건물과 기상청의 고도 차이를 입력하거나 출력하는 속성.
@@ -176,20 +180,15 @@ Public Class Building
             _TotalFloorArea = Value
         End Set
     End Property
-    '</교수님>
-
     '
     '  
     ''' <summary>
     ''' 건물에 등록된 모든 존들의 순바닥면적을 반환한다.
     ''' 순바닥면적 net floor area = 모든 존의 바닥면적의 합
-    ''' 
     ''' </summary>
     ''' <returns>순바닥면적[m^2]</returns>
     Public ReadOnly Property A_NF As Double
         Get
-            _zones.Item("존 01").A_NF = 1
-            _zones("존 01").A_NF = 1
             Return _zones.A_NF()
         End Get
     End Property
@@ -208,7 +207,6 @@ Public Class Building
         End Set
     End Property
 
-    '<최문정>
     '외부체적
     Public Property V_e As Double
         Get
@@ -218,6 +216,7 @@ Public Class Building
             _V_e = value
         End Set
     End Property
+
     '외피면적체적비
     Public ReadOnly Property SurfaceAreaToVolumeRatio As Double
         Get
@@ -230,6 +229,7 @@ Public Class Building
             Return _SurfaceAreaToVolumeRatio
         End Get
     End Property
+
     '기하학적 특성값
     '길이
     Public Property L_char As Double
@@ -240,6 +240,7 @@ Public Class Building
             _L_char = value
         End Set
     End Property
+
     '너비
     Public Property B_char As Double
         Get
@@ -249,7 +250,7 @@ Public Class Building
             _B_char = value
         End Set
     End Property
-    '</최문정>
+    '
 #End Region
 
 #Region "Methods"
@@ -280,6 +281,7 @@ Public Class Building
         '너비
         _B_char = 0.0
     End Sub
+
     Public Sub Import(FileName As String)
         Me.SurfaceArea = 100
         Dim ttt As Double = Me.SurfaceArea
@@ -288,6 +290,18 @@ Public Class Building
     Public Sub Export(filename As String)
 
     End Sub
+
+    Protected Overridable Sub InternalParse(ByVal txt As String)
+        Dim words As String() = txt.Split(New Char() {","c})
+        '
+        '
+    End Sub
+#End Region
+    '
+#Region "Shared Methods"
+    Public Overloads Shared Function Parse(ByVal txt As String) As Building
+        Return New Building(txt)
+    End Function
 #End Region
     '
 End Class
